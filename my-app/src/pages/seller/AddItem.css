@@ -1,0 +1,215 @@
+/* AddItem.css */
+.app-container {
+    min-height: 100vh;
+    background-color: #f9fafb;
+  }
+  
+  .header {
+    background: linear-gradient(to right, #2563eb, #4f46e5);
+    padding: 1rem 1.5rem;
+    color: white;
+  }
+  
+  .header-content {
+    display: flex;
+    align-items: center;
+  }
+  
+  .back-button {
+    margin-right: 0.75rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: white;
+  }
+  
+  .back-button:hover {
+    background-color: #2563eb;
+    transition: background-color 0.3s;
+  }
+  
+  .page-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .main-container {
+    max-width: 42rem;
+    margin: 1.5rem auto;
+    padding: 1.5rem;
+  }
+  
+  .form-card {
+    background-color: white;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+  }
+  
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  
+  @media (min-width: 768px) {
+    .form-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  
+  .form-field {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .col-span-full {
+    grid-column: 1 / -1;
+  }
+  
+  .form-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.25rem;
+  }
+  
+  .text-input, .textarea-input, .select-input {
+    width: 100%;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .text-input:focus, .textarea-input:focus, .select-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+  }
+  
+  .textarea-input {
+    resize: vertical;
+    min-height: 6rem;
+  }
+  
+  .image-upload-container {
+    margin-top: 0.25rem;
+    display: flex;
+    justify-content: center;
+    padding: 1.25rem 1.5rem;
+    border: 2px dashed #d1d5db;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+  
+  .image-upload-container:hover {
+    background-color: #f9fafb;
+  }
+  
+  .image-upload-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .image-preview {
+    max-height: 16rem;
+    overflow: hidden;
+  }
+  
+  .image-preview img {
+    margin: 0 auto;
+    max-height: 16rem;
+    object-fit: contain;
+  }
+  
+  .image-placeholder {
+    margin: 0 auto;
+    height: 6rem;
+    width: 6rem;
+    color: #9ca3af;
+  }
+  
+  .upload-hint {
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+  
+  .hidden-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  
+  .form-footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .submit-button {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .button-blue {
+    background-color: #2563eb;
+  }
+  
+  .button-blue:hover {
+    background-color: #1d4ed8;
+  }
+  
+  .button-green {
+    background-color: #16a34a;
+  }
+  
+  .button-green:hover {
+    background-color: #15803d;
+  }
+  
+  .button-disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .button-icon {
+    margin-right: 0.5rem;
+  }
+  
+  .spinner {
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }

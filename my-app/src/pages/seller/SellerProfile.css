@@ -1,0 +1,50 @@
+.seller-profile {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .seller-profile h2 {
+    text-align: center;
+  }
+  
+  .seller-profile label {
+    display: block;
+    margin-top: 10px;
+  }
+  
+  .seller-profile input,
+  .seller-profile textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+  }
+  
+  .seller-profile button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .seller-profile button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+  }
+  
+  .success-message {
+    color: green;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .error-message {
+    color: red;
+    text-align: center;
+    margin-bottom: 10px;
+  }

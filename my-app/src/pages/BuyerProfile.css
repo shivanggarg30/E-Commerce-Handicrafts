@@ -1,0 +1,49 @@
+.buyer-profile {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .buyer-profile h2 {
+    text-align: center;
+  }
+  
+  .buyer-profile label {
+    display: block;
+    margin-top: 10px;
+  }
+  
+  .buyer-profile input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+  }
+  
+  .buyer-profile button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .buyer-profile button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+  }
+  
+  .success-message {
+    color: green;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .error-message {
+    color: red;
+    text-align: center;
+    margin-bottom: 10px;
+  }
