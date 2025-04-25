@@ -44,24 +44,50 @@ const Products = () => {
         description: "Handmade eco-friendly clay pot.",
         price: 250,
         category: "clay",
-        imageUrl: "https://via.placeholder.com/300"
+        imageUrl: "./assets/Clay-pot.png"
       },
       {
         id: "2",
+        name: "Kashmere Shawl",
+        description: "A classic pure kashmiri shawl (doshala) woven on a handloom.",
+        price: 500,
+        category: "textile",
+        imageUrl: "./assets/kashmere-shawl.png"
+      },
+      {
+        id: "3",
         name: "Wooden Sculpture",
         description: "Artistic wooden sculpture made by local artisans.",
         price: 800,
         category: "wood",
-        imageUrl: "https://via.placeholder.com/300"
+        imageUrl: "./assets/wooden-sculpture.png"
       },
       {
-        id: "3",
+        id: "4",
         name: "Bamboo Basket",
         description: "Eco-friendly bamboo basket for multipurpose use.",
-        price: 400,
+        price: 250,
         category: "bamboo",
-        imageUrl: "https://via.placeholder.com/300"
+        imageUrl: "./assets/bamboo-basket.png"
+      },
+    
+      {
+        id: "5",
+        name: "Block Fabric",
+        description: "Block Printed Handmade Fabric - 8 meters",
+        price: 700,
+        category: "textile",
+        imageUrl: "./assets/block-fabric.png"
+      },
+      {
+        id: "6",
+        name: "Cotton Handmade muslin",
+        description: "Jamdani is a woven fabric in cotton. This is a supplementary weft technique of weaving, where the artistic motifs are produced by a non-structural weft, in addition to the standard weft that holds the warp threads together. The standard weft creates a fine, sheer fabric while the supplementary weft with thicker threads adds the intricate patterns to it. Jamdani is a fine muslin cloth on which decorative motifs are woven on the loom, typically in grey and white. Often a mixture of cotton and gold thread was used.",
+        price: 4000,
+        category: "textile",
+        imageUrl: "./assets/muslin.png"
       }
+
     ];
 
     setTimeout(() => {

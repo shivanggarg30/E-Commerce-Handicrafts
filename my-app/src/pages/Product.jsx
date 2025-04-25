@@ -18,6 +18,58 @@ import {
 } from "firebase/firestore";
 */
 
+// Mock data - shared with Products.jsx component
+const mockProducts = [
+  {
+    id: "1",
+    name: "Clay Pot",
+    description: "Handmade eco-friendly clay pot.",
+    price: 250,
+    category: "clay",
+    imageUrl: "../assets/Clay-pot.png"
+  },
+  {
+    id: "2",
+    name: "Kashmere Shawl",
+    description: "A classic pure kashmiri shawl (doshala) woven on a handloom.",
+    price: 500,
+    category: "textile",
+    imageUrl: "../assets/kashmere-shawl.png"
+  },
+  {
+    id: "3",
+    name: "Wooden Sculpture",
+    description: "Artistic wooden sculpture made by local artisans.",
+    price: 800,
+    category: "wood",
+    imageUrl: "../assets/wooden-sculpture.png"
+  },
+  {
+    id: "4",
+    name: "Bamboo Basket",
+    description: "Eco-friendly bamboo basket for multipurpose use.",
+    price: 250,
+    category: "bamboo",
+    imageUrl: "../assets/bamboo-basket.png"
+  },
+  {
+    id: "5",
+    name: "Block Fabric",
+    description: "Block Printed Handmade Fabric - 8 meters",
+    price: 700,
+    category: "textile",
+    imageUrl: "../assets/block-fabric.png"
+  },
+  {
+    id: "6",
+    name: "Cotton Handmade muslin",
+    description: "Jamdani is a woven fabric in cotton. This is a supplementary weft technique of weaving, where the artistic motifs are produced by a non-structural weft, in addition to the standard weft that holds the warp threads together. The standard weft creates a fine, sheer fabric while the supplementary weft with thicker threads adds the intricate patterns to it. Jamdani is a fine muslin cloth on which decorative motifs are woven on the loom, typically in grey and white. Often a mixture of cotton and gold thread was used.",
+    price: 4000,
+    category: "textile",
+    imageUrl: "../assets/muslin.png"
+  }
+];
+
 const Product = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({});
@@ -47,25 +99,39 @@ const Product = () => {
 
         // if (docSnap.exists()) {
         //   const productData = { id: docSnap.id, ...docSnap.data() };
-        const productData = {
-          id: id,
-          name: "Sample Product",
-          category: "Handicrafts",
-          price: 999,
-          description: "A beautiful handcrafted item.",
-          imageUrl: "https://via.placeholder.com/400",
-          rating: { rate: 4.5 },
-        };
-
-        setProduct(productData);
-
-        const similarItems = Array.from({ length: 4 }, (_, i) => ({
-          id: `similar-${i}`,
-          name: `Similar Product ${i + 1}`,
-          imageUrl: "https://via.placeholder.com/300",
-        }));
-
-        setSimilarProducts(similarItems);
+        
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 800));
+        
+        // Find product by ID from mock data
+        const foundProduct = mockProducts.find(item => item.id === id);
+        
+        if (foundProduct) {
+          setProduct(foundProduct);
+          
+          // Find similar products based on category
+          const similar = mockProducts
+            .filter(item => item.category === foundProduct.category && item.id !== id)
+            .slice(0, 4); // Limit to 4 similar products
+            
+          setSimilarProducts(similar);
+        } else {
+          console.log("Product not found!");
+          
+          // Fallback to sample product when ID doesn't match
+          const sampleProduct = {
+            id: id || "sample",
+            name: "Sample Product",
+            category: "sample",
+            price: 250,
+            description: "This is a sample product.",
+            imageUrl: "/api/placeholder/400/400",
+            rating: { rate: 4.2 },
+          };
+          
+          setProduct(sampleProduct);
+          setSimilarProducts([]);
+        }
 
         // } else {
         //   console.log("No such document!");
