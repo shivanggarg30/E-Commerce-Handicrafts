@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Footer, Navbar } from "../components";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "../utils/firebase"; // Updated import
+// import { createUserWithEmailAndPassword } from "firebase/auth";
+// import { doc, setDoc } from "firebase/firestore";
+// import initializeFirebase from "../utils/FirebaseInit"; // Firebase import commented
 
 const Register = () => {
+    // const { auth, db } = initializeFirebase(); // Firebase initialization commented
+
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         password: '',
-        role: 'user', // default role
+        role: 'user',
     });
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
-    const auth = getAuth(); // Get auth instance
 
     const handleChange = (e) => {
         setFormData({
@@ -30,25 +31,26 @@ const Register = () => {
         setIsLoading(true);
 
         try {
-            const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
-            const user = userCredential.user;
+            // Firebase functionality commented
+            // const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+            // const user = userCredential.user;
 
-            // Save extra data (name, role) in Firestore
-            await setDoc(doc(db, "users", user.uid), {
-                name: formData.name,
-                email: formData.email,
-                role: formData.role,
-                createdAt: new Date().toISOString()
-            });
+            // await setDoc(doc(db, "users", user.uid), {
+            //     name: formData.name,
+            //     email: formData.email,
+            //     role: formData.role,
+            //     createdAt: new Date().toISOString()
+            // });
 
-            alert('Registration Successful!');
+            alert('Registration Successful! (Simulated)');
             navigate('/login');
         } catch (err) {
-            if (err.code === 'auth/email-already-in-use') {
-                setError('This email has already been registered');
-            } else {
-                setError(err.message);
-            }
+            // if (err.code === 'auth/email-already-in-use') {
+            //     setError('This email has already been registered');
+            // } else {
+            //     setError(err.message);
+            // }
+            setError("Simulated error. Firebase is disabled.");
         } finally {
             setIsLoading(false);
         }
@@ -117,8 +119,8 @@ const Register = () => {
                                 <p>Already have an account? <Link to="/login" className="text-decoration-underline text-info">Login</Link> </p>
                             </div>
                             <div className="text-center">
-                                <button 
-                                    className="my-2 mx-auto btn btn-dark" 
+                                <button
+                                    className="my-2 mx-auto btn btn-dark"
                                     type="submit"
                                     disabled={isLoading}
                                 >
@@ -135,5 +137,3 @@ const Register = () => {
 };
 
 export default Register;
-
-

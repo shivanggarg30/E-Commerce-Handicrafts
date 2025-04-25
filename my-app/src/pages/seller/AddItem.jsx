@@ -2,15 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Image, Upload, Check, Loader2 } from 'lucide-react';
 import './AddItem.css';
-import { db, storage } from "../../utils/firebase"; // Import db and storage
-import { collection, addDoc } from "firebase/firestore";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+// import initializeFirebase from "../../utils/FirebaseInit"; // 🔥 Firebase Init (commented out)
+// import { collection, addDoc } from "firebase/firestore";  // 🔥 Firestore (commented out)
+// import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"; // 🔥 Storage (commented out)
 import { useAuth } from "../../context/AuthContext";
- // Import useAuth
 
 const AddItem = () => {
+  // const { db, storage } = initializeFirebase(); // 🚫 Firebase services (commented)
+
   const navigate = useNavigate();
-  const { user, userRole } = useAuth(); // Get user from auth context
+  const { user, userRole } = useAuth();
+
   const [item, setItem] = useState({
     name: '',
     description: '',
@@ -18,19 +20,19 @@ const AddItem = () => {
     price: '',
     quantity: '',
   });
+
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [error, setError] = useState(null);
 
-  // Check if user has seller role
   useEffect(() => {
     if (!user) {
       navigate('/login');
       return;
     }
-    
+
     if (userRole !== 'seller') {
       navigate('/unauthorized');
     }
@@ -58,66 +60,49 @@ const AddItem = () => {
     setError(null);
 
     try {
-      if (!user) {
-        throw new Error("You must be logged in to add items");
-      }
+      if (!user) throw new Error("You must be logged in to add items");
 
       let imageUrl = null;
 
       if (image) {
-        try {
-          // Create a unique file name to avoid conflicts
-          const fileName = `${user.uid}_${Date.now()}_${image.name}`;
-          const storageRef = ref(storage, `products/${fileName}`);
-          
-          const uploadTask = uploadBytesResumable(storageRef, image);
-
-          imageUrl = await new Promise((resolve, reject) => {
-            uploadTask.on(
-              "state_changed",
-              (snapshot) => {
-                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log("Upload is " + progress + "% done");
-              },
-              (error) => {
-                console.error("Error uploading image:", error);
-                reject(error);
-              },
-              async () => {
-                try {
-                  const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-                  resolve(downloadURL);
-                } catch (err) {
-                  console.error("Error getting download URL:", err);
-                  reject(err);
-                }
-              }
-            );
-          });
-        } catch (imageError) {
-          console.error("Image upload error:", imageError);
-          throw new Error("Failed to upload image. Please try again.");
-        }
+        // 🔥 Firebase image upload logic (commented out)
+        /*
+        const fileName = `${user.uid}_${Date.now()}_${image.name}`;
+        const storageRef = ref(storage, `products/${fileName}`);
+        const uploadTask = uploadBytesResumable(storageRef, image);
+        imageUrl = await new Promise((resolve, reject) => {
+          uploadTask.on(
+            "state_changed",
+            null,
+            (error) => reject(error),
+            async () => {
+              const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+              resolve(downloadURL);
+            }
+          );
+        });
+        */
       }
 
-      // Parse price and quantity as numbers
       const parsedItem = {
         ...item,
         price: parseFloat(item.price),
         quantity: parseInt(item.quantity, 10),
-        imageUrl,
+        imageUrl, // Would be the Firebase download URL
         sellerId: user.uid,
         sellerEmail: user.email,
         createdAt: new Date().toISOString(),
       };
 
-      // Add to Firestore
-      const productsCollectionRef = collection(db, "products");
-      await addDoc(productsCollectionRef, parsedItem);
+      // 🔥 Firestore add (commented out)
+      // const productsCollectionRef = collection(db, "products");
+      // await addDoc(productsCollectionRef, parsedItem);
 
+      // Simulate success
+      console.log("Simulated item data:", parsedItem);
       setSubmitSuccess(true);
       setTimeout(() => {
-        if (window.confirm('Item added successfully! Add another item?')) {
+        if (window.confirm('Item "added"! Add another item?')) {
           setItem({ name: '', description: '', category: '', price: '', quantity: '' });
           setImage(null);
           setImagePreview(null);
@@ -138,24 +123,18 @@ const AddItem = () => {
     navigate('/seller/dashboard');
   };
 
-  // Updated categories to match with those in Products.jsx
   const categories = [
-    'pottery', 'textile', 'woodwork', 'basketry', 
+    'pottery', 'textile', 'woodwork', 'basketry',
     'metalwork', 'eco-crafts', 'leatherwork', 'other'
   ];
 
-  if (!user) {
-    return <div className="loading-container">Loading...</div>;
-  }
+  if (!user) return <div className="loading-container">Loading...</div>;
 
   return (
     <div className="app-container">
       <div className="header">
         <div className="header-content">
-          <button
-            onClick={navigateToDashboard}
-            className="back-button"
-          >
+          <button onClick={navigateToDashboard} className="back-button">
             <ArrowLeft size={20} />
           </button>
           <h1 className="page-title">Add New Item</h1>
@@ -164,12 +143,8 @@ const AddItem = () => {
 
       <div className="main-container">
         <div className="form-card">
-          {error && (
-            <div className="error-message">
-              {error}
-            </div>
-          )}
-          
+          {error && <div className="error-message">{error}</div>}
+
           <form onSubmit={handleSubmit} className="form-container">
             <div className="form-grid">
               <div className="form-field col-span-full">
@@ -208,7 +183,9 @@ const AddItem = () => {
                 >
                   <option value="">Select Category</option>
                   {categories.map(category => (
-                    <option key={category} value={category}>{category.charAt(0).toUpperCase() + category.slice(1)}</option>
+                    <option key={category} value={category}>
+                      {category.charAt(0).toUpperCase() + category.slice(1)}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -244,7 +221,10 @@ const AddItem = () => {
 
               <div className="form-field col-span-full">
                 <label className="form-label">Product Image</label>
-                <div className="image-upload-container" onClick={() => document.getElementById('file-upload').click()}>
+                <div
+                  className="image-upload-container"
+                  onClick={() => document.getElementById('file-upload').click()}
+                >
                   <div className="image-upload-inner">
                     {imagePreview ? (
                       <div className="image-preview">
@@ -258,7 +238,14 @@ const AddItem = () => {
                         <p className="upload-hint">Click to upload an image</p>
                       </div>
                     )}
-                    <input id="file-upload" name="file-upload" type="file" className="hidden-input" onChange={handleImageChange} accept="image/*" />
+                    <input
+                      id="file-upload"
+                      name="file-upload"
+                      type="file"
+                      className="hidden-input"
+                      onChange={handleImageChange}
+                      accept="image/*"
+                    />
                   </div>
                 </div>
               </div>

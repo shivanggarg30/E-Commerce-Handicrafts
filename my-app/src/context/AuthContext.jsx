@@ -1,34 +1,30 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../utils/firebase";
+// import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth"; // 🔥 Firebase Auth (commented)
+// import { doc, getDoc } from "firebase/firestore"; // 🔥 Firestore (commented)
+// import initializeFirebase from "../utils/FirebaseInit"; // 🔥 Firebase Init (commented)
 import { useNavigate } from 'react-router-dom';
 
-// Create context
 const AuthContext = createContext(null);
 
-// Custom hook to use the AuthContext
 export const useAuth = () => useContext(AuthContext);
 
-// Provider component
 export const AuthProvider = ({ children }) => {
+    // const { auth, db } = initializeFirebase(); // 🚫 Firebase services (commented)
+
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [userRole, setUserRole] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
-        const auth = getAuth();
-
-        // Set up the onAuthStateChanged listener
+        // 🔥 onAuthStateChanged (commented)
+        /*
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // User is signed in.
                 setUser(user);
                 console.log("User is signed in:", user.uid);
 
                 try {
-                    // Get user role from Firestore
                     const userDocRef = doc(db, "users", user.uid);
                     const userDoc = await getDoc(userDocRef);
 
@@ -45,7 +41,6 @@ export const AuthProvider = ({ children }) => {
                     setUserRole(null);
                 }
             } else {
-                // User is signed out.
                 setUser(null);
                 setUserRole(null);
                 console.log("User is signed out");
@@ -53,28 +48,32 @@ export const AuthProvider = ({ children }) => {
             setLoading(false);
         });
 
-        // Clean up the listener when the component unmounts
         return () => unsubscribe();
+        */
+
+        // Simulate guest user for frontend dev
+        setTimeout(() => {
+            setUser({ uid: "demoUser123", email: "demo@example.com" });
+            setUserRole("seller");
+            setLoading(false);
+        }, 1000);
     }, []);
 
     const login = async (email, password) => {
         try {
-            const auth = getAuth();
+            // 🔥 Firebase login (commented)
+            /*
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            // Fetch role from Firestore
             const userDocRef = doc(db, "users", user.uid);
             const userDoc = await getDoc(userDocRef);
 
             if (userDoc.exists()) {
                 const userData = userDoc.data();
                 const role = userData.role;
-                
-                // Set role in state
                 setUserRole(role);
-                
-                // Navigate based on role
+
                 if (role === "seller") {
                     navigate("/seller/dashboard");
                 } else {
@@ -84,26 +83,43 @@ export const AuthProvider = ({ children }) => {
                 console.log("No user document found");
                 navigate("/");
             }
-            
+
+            return user;
+            */
+
+            // Simulated login
+            const user = { uid: "demoUser123", email };
+            setUser(user);
+            const role = email.includes("seller") ? "seller" : "user";
+            setUserRole(role);
+
+            if (role === "seller") {
+                navigate("/seller/dashboard");
+            } else {
+                navigate("/");
+            }
+
             return user;
         } catch (error) {
-            console.error("Login error:", error);
+            console.error("Login error (simulated):", error);
             throw error;
         }
     };
 
     const logout = async () => {
-        const auth = getAuth();
         try {
-            await signOut(auth);
+            // await signOut(auth); // 🔥 Firebase signOut (commented)
+
+            // Simulate logout
+            setUser(null);
+            setUserRole(null);
             navigate("/login");
         } catch (error) {
-            console.error("Logout error:", error);
+            console.error("Logout error (simulated):", error);
             throw error;
         }
     };
 
-    // The 'value' passed to the context provider
     const value = {
         user,
         loading,
@@ -120,3 +136,5 @@ export const AuthProvider = ({ children }) => {
 };
 
 export { AuthContext };
+
+

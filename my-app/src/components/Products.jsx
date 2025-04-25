@@ -5,34 +5,70 @@ import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { db } from "../utils/firebase"; // Import from correct file
-import { collection, onSnapshot } from "firebase/firestore";
+// import initializeFirebase from "../utils/FirebaseInit"; // 🔥 Firebase Init (commented)
+// import { collection, onSnapshot } from "firebase/firestore"; // 🔥 Firestore methods (commented)
 
 const Products = () => {
+  // const { db } = initializeFirebase(); // 🚫 Firebase service (commented)
+
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState([]);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchProducts = () => {
-      setLoading(true);
-      const productsCollectionRef = collection(db, "products"); // Use the imported 'db'
+    // const fetchProducts = () => {
+    //   setLoading(true);
+    //   const productsCollectionRef = collection(db, "products");
 
-      const unsubscribe = onSnapshot(productsCollectionRef, (snapshot) => {
-        const products = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setData(products);
-        setFilter(products);
-        setLoading(false);
-      });
+    //   const unsubscribe = onSnapshot(productsCollectionRef, (snapshot) => {
+    //     const products = snapshot.docs.map((doc) => ({
+    //       id: doc.id,
+    //       ...doc.data(),
+    //     }));
+    //     setData(products);
+    //     setFilter(products);
+    //     setLoading(false);
+    //   });
 
-      return () => unsubscribe();
-    };
+    //   return () => unsubscribe();
+    // };
 
-    fetchProducts();
+    // fetchProducts();
+
+    // 🔧 Mock data for frontend-only testing
+    const mockProducts = [
+      {
+        id: "1",
+        name: "Clay Pot",
+        description: "Handmade eco-friendly clay pot.",
+        price: 250,
+        category: "clay",
+        imageUrl: "https://via.placeholder.com/300"
+      },
+      {
+        id: "2",
+        name: "Wooden Sculpture",
+        description: "Artistic wooden sculpture made by local artisans.",
+        price: 800,
+        category: "wood",
+        imageUrl: "https://via.placeholder.com/300"
+      },
+      {
+        id: "3",
+        name: "Bamboo Basket",
+        description: "Eco-friendly bamboo basket for multipurpose use.",
+        price: 400,
+        category: "bamboo",
+        imageUrl: "https://via.placeholder.com/300"
+      }
+    ];
+
+    setTimeout(() => {
+      setData(mockProducts);
+      setFilter(mockProducts);
+      setLoading(false);
+    }, 1000);
   }, []);
 
   const addProduct = (product) => {
@@ -61,7 +97,6 @@ const Products = () => {
     </>
   );
 
-  // Get unique categories from data to create dynamic filter buttons
   const getUniqueCategories = () => {
     return ['all', ...new Set(data.map(product => product.category))];
   };
@@ -70,9 +105,9 @@ const Products = () => {
     <>
       <div className="buttons text-center py-5">
         {getUniqueCategories().map((category) => (
-          <button 
-            key={category} 
-            className="btn btn-outline-dark btn-sm m-2" 
+          <button
+            key={category}
+            className="btn btn-outline-dark btn-sm m-2"
             onClick={() => filterProduct(category)}
           >
             {category === 'all' ? 'All' : category.charAt(0).toUpperCase() + category.slice(1)}
@@ -85,10 +120,10 @@ const Products = () => {
           {filter.map((product) => (
             <div id={product.id} key={product.id} className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4">
               <div className="card text-center h-100">
-                <img 
-                  className="card-img-top p-3" 
-                  src={product.imageUrl} 
-                  alt={product.name} 
+                <img
+                  className="card-img-top p-3"
+                  src={product.imageUrl}
+                  alt={product.name}
                   height={300}
                   onError={(e) => {
                     e.target.onerror = null;
@@ -97,13 +132,13 @@ const Products = () => {
                 />
                 <div className="card-body">
                   <h5 className="card-title">
-                    {product.name && product.name.length > 15 
-                      ? `${product.name.substring(0, 15)}...` 
+                    {product.name && product.name.length > 15
+                      ? `${product.name.substring(0, 15)}...`
                       : product.name}
                   </h5>
                   <p className="card-text">
-                    {product.description && product.description.length > 90 
-                      ? `${product.description.substring(0, 90)}...` 
+                    {product.description && product.description.length > 90
+                      ? `${product.description.substring(0, 90)}...`
                       : product.description}
                   </p>
                 </div>
